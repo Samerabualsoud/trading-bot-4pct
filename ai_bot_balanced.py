@@ -149,8 +149,8 @@ CONFIG = {
     
     # Daily Profit Target
     'daily_profit_target': 0.04,  # 4% target
-    'daily_profit_max': 0.15,  # 15% maximum - STOP trading
-    'scale_down_after_target': True,
+    'daily_profit_max': 999,  # UNLIMITED - no daily profit limit (was 0.15)
+    'scale_down_after_target': False,  # DISABLED - no risk scaling (was True)
     'target_scale_factor': 0.5,  # 50% risk after hitting target
     
     # Drawdown Protection
