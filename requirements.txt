@@ -1,0 +1,19 @@
+# AI Trading Bot - Maximum Performance
+# Python 3.8+ required
+
+# Core Trading
+MetaTrader5>=5.0.45
+
+# Data Processing
+pandas>=1.5.0
+numpy>=1.23.0
+
+# Machine Learning
+scikit-learn>=1.2.0
+
+# Deep Learning (LSTM models)
+tensorflow>=2.12.0
+
+# Model Persistence
+joblib>=1.2.0
+
