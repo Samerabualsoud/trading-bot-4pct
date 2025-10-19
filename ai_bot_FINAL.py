@@ -207,7 +207,8 @@ CONFIG = {
     # NEW: Intelligent Exit (FIX #2)
     'use_intelligent_exit': True,
     'exit_on_opposite_signal': True,
-    'exit_wait_minutes': 5,  # Wait 5 min before opening opposite,
+    'exit_wait_minutes': 5,  # Wait 5 min before opening opposite
+    'exit_signal_min_confidence': 70,  # Require 70% for early exit (higher than entry!)
     
     # ADVANCED OPTIMIZATIONS (10 features)
     'use_advanced_optimizations': True,
@@ -1377,19 +1378,19 @@ class UltimateTradingBot:
                 buy_confidence = (ai_score * self.config['ai_weight']) + (ta_signals['buy'] * self.config['ta_weight'])
                 sell_confidence = ((100 - ai_score) * self.config['ai_weight']) + (ta_signals['sell'] * self.config['ta_weight'])
                 
-                # Check for opposite signal
-                base_threshold = self.get_symbol_min_confidence(symbol)
-                min_confidence = self.get_session_adjusted_confidence(base_threshold)
+                # Check for opposite signal with HIGHER threshold for exits
+                # Use separate exit threshold (70%) instead of entry threshold (15-25%)
+                exit_threshold = self.config.get('exit_signal_min_confidence', 70)
                 
                 should_exit = False
                 exit_reason = ""
                 
-                if current_direction == 'buy' and sell_confidence > buy_confidence and sell_confidence >= min_confidence:
+                if current_direction == 'buy' and sell_confidence > buy_confidence and sell_confidence >= exit_threshold:
                     should_exit = True
-                    exit_reason = f"Opposite SELL signal ({sell_confidence:.1f}% confidence)"
-                elif current_direction == 'sell' and buy_confidence > sell_confidence and buy_confidence >= min_confidence:
+                    exit_reason = f"Strong opposite SELL signal ({sell_confidence:.1f}% >= {exit_threshold}%)"
+                elif current_direction == 'sell' and buy_confidence > sell_confidence and buy_confidence >= exit_threshold:
                     should_exit = True
-                    exit_reason = f"Opposite BUY signal ({buy_confidence:.1f}% confidence)"
+                    exit_reason = f"Strong opposite BUY signal ({buy_confidence:.1f}% >= {exit_threshold}%)"
                 
                 if should_exit:
                     # Close position
