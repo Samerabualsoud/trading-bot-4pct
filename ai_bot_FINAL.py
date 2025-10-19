@@ -955,15 +955,15 @@ class UltimateTradingBot:
         
         # Apply limits based on instrument type
         if 'BTC' in symbol or 'ETH' in symbol:
-            max_position_value = balance * 0.10
+            max_position_value = balance * 0.50  # 50% of balance (was 10%)
             max_lots = max_position_value / symbol_info.ask
             position_size = min(position_size, max_lots)
         elif 'XAU' in symbol or 'XAG' in symbol or 'XTI' in symbol:
-            max_position_value = balance * 0.10
+            max_position_value = balance * 0.50  # 50% of balance (was 10%)
             max_lots = max_position_value / (symbol_info.ask * symbol_info.trade_contract_size)
             position_size = min(position_size, max_lots)
         else:
-            max_position_value = balance * 0.20
+            max_position_value = balance * 0.60  # 60% of balance (was 20%)
             max_lots = max_position_value / symbol_info.trade_contract_size
             position_size = min(position_size, max_lots)
         
