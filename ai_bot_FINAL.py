@@ -133,7 +133,7 @@ CONFIG = {
     'reward_risk_ratio': 1.5,  # Base R:R (will be dynamic)
     'use_dynamic_rr': True,
     'use_trailing_stop': True,
-    'use_confidence_sizing': True,
+    'use_confidence_sizing': False,  # DISABLED - use full position size
     
     # Daily Profit Target
     'daily_profit_target': 0.04,  # 4% target
@@ -155,15 +155,15 @@ CONFIG = {
         # Major Forex (normal risk)
         'EURUSD': 1.0, 'GBPUSD': 1.0, 'USDJPY': 1.0,
         'AUDUSD': 1.0, 'NZDUSD': 1.0, 'USDCAD': 1.0, 'USDCHF': 1.0,
-        # Cross Forex (slightly reduced)
-        'EURGBP': 0.9, 'EURJPY': 0.9, 'GBPJPY': 0.8,
-        'AUDJPY': 0.9, 'NZDJPY': 0.9, 'EURAUD': 0.9,
-        'EURNZD': 0.9, 'GBPAUD': 0.9, 'GBPNZD': 0.9, 'AUDNZD': 0.9,
-        # Commodities (reduced - volatile)
-        'XAUUSD': 0.8, 'XAGUSD': 0.7, 'XTIUSD': 0.7,
-        # Crypto (significantly reduced)
-        'BTCUSD': 0.6, 'ETHUSD': 0.6, 'SOLUSD': 0.5,
-        'DOGEUSD': 0.5, 'XRPUSD': 0.5,
+        # Cross Forex (INCREASED for large balance)
+        'EURGBP': 1.0, 'EURJPY': 1.0, 'GBPJPY': 1.0,
+        'AUDJPY': 1.0, 'NZDJPY': 1.0, 'EURAUD': 1.0,
+        'EURNZD': 1.0, 'GBPAUD': 1.0, 'GBPNZD': 1.0, 'AUDNZD': 1.0,
+        # Commodities (INCREASED for large balance)
+        'XAUUSD': 1.2, 'XAGUSD': 1.0, 'XTIUSD': 1.0,
+        # Crypto (INCREASED for large balance)
+        'BTCUSD': 1.2, 'ETHUSD': 1.2, 'SOLUSD': 1.0,
+        'DOGEUSD': 1.0, 'XRPUSD': 1.0,
     },
     
     # Signal Generation - OPTIMIZED
