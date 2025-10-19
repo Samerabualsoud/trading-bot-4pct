@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-AI Trading Bot - MAXIMUM PERFORMANCE VERSION (DEBUG MODE)
+AI Trading Bot - MAXIMUM PERFORMANCE VERSION
 ==================================================================
 
 ALL 7 CRITICAL FIXES IMPLEMENTED:
@@ -236,7 +236,7 @@ CONFIG = {
 
 # Setup logging
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler('ai_trading_bot_maximum.log'),
@@ -801,8 +801,10 @@ class UltimateTradingBot:
     
     def can_trade(self):
         """Check if we can open new trades"""
+        logger.info("[DEBUG] Checking if can trade...")
         account_info = mt5.account_info()
         if account_info is None:
+            logger.warning("[DEBUG] can_trade: account_info is None!")
             return False
         
         # Check if maximum daily profit reached (15%)
@@ -857,6 +859,7 @@ class UltimateTradingBot:
             logger.info(f"Max open trades reached: {positions}")
             return False
         
+        logger.info("[DEBUG] can_trade: ALL CHECKS PASSED ✓")
         return True
     
     def get_dynamic_risk(self, df):
@@ -1076,14 +1079,10 @@ class UltimateTradingBot:
     def process_symbol(self, symbol, account_info):
         """Process one symbol and generate signals"""
         try:
-            # DEBUG: Show we're analyzing this symbol
-            logger.debug(f"[ANALYZING] {symbol}...")
-            
             # Get market data
             rates = mt5.copy_rates_from_pos(symbol, mt5.TIMEFRAME_M5, 0, self.config['lookback_candles'])
             
             if rates is None or len(rates) < 200:
-                logger.debug(f"  [{symbol}] No data or insufficient candles (got {len(rates) if rates is not None else 0})")
                 return None
             
             df = pd.DataFrame(rates)
@@ -1092,7 +1091,6 @@ class UltimateTradingBot:
             # Apply filters
             if self.config['use_market_hours_filter']:
                 if not MarketFilters.is_active_hours():
-                    logger.debug(f"  [{symbol}] Outside active hours")
                     return None
             
             if self.config['use_volatility_filter']:
@@ -1149,7 +1147,6 @@ class UltimateTradingBot:
                 confidence = sell_confidence
             
             if action is None:
-                logger.debug(f"  [{symbol}] No signal - BUY: {buy_confidence:.1f}%, SELL: {sell_confidence:.1f}% (need {min_confidence:.1f}%)")
                 return None
             
             # Check trend filter
@@ -1668,8 +1665,6 @@ class UltimateTradingBot:
         
         # Process all symbols
         signals_generated = 0
-        
-        logger.info(f"Analyzing {len(self.config['symbols'])} symbols...")
         
         for symbol in self.config['symbols']:
             signal = self.process_symbol(symbol, account_info)
